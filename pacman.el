@@ -162,6 +162,7 @@
       (message "You win! Final score: %d" pacman-score)
       (kill-buffer (current-buffer)))))
 
+
 ;;;###autoload
 (defun pacman-start ()
   "Start playing Pac-Man." 
