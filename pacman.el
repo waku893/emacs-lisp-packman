@@ -51,6 +51,7 @@
     (define-key map (kbd "<right>") #'pacman-move-right)
     (define-key map (kbd "<up>") #'pacman-move-up)
     (define-key map (kbd "<down>") #'pacman-move-down)
+    (define-key map (kbd "q") #'pacman-end)
     map)
   "Keymap for Pac-Man mode.")
 
@@ -142,18 +143,25 @@
                     (cons gx gy)))
                 pacman-ghosts)))
 
+(defun pacman-end ()
+  "Quit the game and kill the Pac-Man buffer."
+  (let ((buf (current-buffer)))
+    (when (buffer-live-p buf)
+      (kill-buffer buf)))
+  (message "Thanks for playing!"))
+
 (defun pacman-check-game-over ()
-  "Check if player collided with a ghost or won." 
+  "Check if player collided with a ghost or won."
   (if (cl-find-if (lambda (pos)
                     (and (= (car pos) pacman-player-x)
                          (= (cdr pos) pacman-player-y)))
                   pacman-ghosts)
       (progn
         (message "Game Over! Final score: %d" pacman-score)
-        (pacman-mode -1))
+        (pacman-end))
     (when (<= pacman-pellets 0)
       (message "You win! Final score: %d" pacman-score)
-      (pacman-mode -1))))
+      (pacman-end))))
 
 ;;;###autoload
 (defun pacman-start ()
@@ -163,7 +171,7 @@
   (setq buffer-read-only t)
   (pacman-init)
   (use-local-map pacman-mode-map)
-  (pacman-mode 1)
+  (pacman-mode)
   (pacman-draw))
 
 (define-derived-mode pacman-mode special-mode "Pac-Man"
