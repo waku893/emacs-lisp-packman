@@ -157,10 +157,11 @@
                   pacman-ghosts)
       (progn
         (message "Game Over! Final score: %d" pacman-score)
-        (pacman-mode -1))
+        (kill-buffer (current-buffer)))
     (when (<= pacman-pellets 0)
       (message "You win! Final score: %d" pacman-score)
-      (pacman-mode -1))))
+      (kill-buffer (current-buffer)))))
+
 
 ;;;###autoload
 (defun pacman-start ()
@@ -170,7 +171,7 @@
   (setq buffer-read-only t)
   (pacman-init)
   (use-local-map pacman-mode-map)
-  (pacman-mode 1)
+  (pacman-mode)
   (pacman-draw))
 
 (define-derived-mode pacman-mode special-mode "Pac-Man"
